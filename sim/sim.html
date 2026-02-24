@@ -57,20 +57,23 @@
 </script>
 <script src="https://storage.googleapis.com/enakr8ia_habitat/source_files/attractors-master/sim/Attractors.js"></script>
 
-<!-- GJ: Responsive scaling — scales canvas to fill iframe width -->
+<!-- GJ: Responsive scaling — activates only when ?responsive=1 is in the URL -->
+<!-- Native iOS/Android apps omit this param and are unaffected -->
 <script>
-function gjScaleCanvas() {
-  var c = document.getElementById('canvas');
-  if (!c) return;
-  var scale = window.innerWidth / 400;
-  c.style.transformOrigin = 'top left';
-  c.style.transform = 'scale(' + scale + ')';
-  var h = parseInt(c.style.height) || 600;
-  document.body.style.height = (h * scale) + 'px';
-  document.body.style.overflow = 'hidden';
+if (new URLSearchParams(location.search).get('responsive') === '1') {
+  function gjScaleCanvas() {
+    var c = document.getElementById('canvas');
+    if (!c) return;
+    var scale = Math.min(window.innerWidth / 400, 1);
+    c.style.transformOrigin = 'top left';
+    c.style.transform = 'scale(' + scale + ')';
+    var h = parseInt(c.style.height) || 600;
+    document.body.style.height = (h * scale) + 'px';
+    document.body.style.overflow = 'hidden';
+  }
+  window.addEventListener('load', function() { setTimeout(gjScaleCanvas, 50); });
+  window.addEventListener('resize', gjScaleCanvas);
 }
-window.addEventListener('load', function() { setTimeout(gjScaleCanvas, 50); });
-window.addEventListener('resize', gjScaleCanvas);
 </script>
 
 </body>
