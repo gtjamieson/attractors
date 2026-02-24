@@ -149,7 +149,7 @@ The sim supports responsive scaling via a URL parameter. This allows the HTML5 w
 
 | Platform | iframe URL | Scaling |
 |----------|-----------|---------|
-| HTML5 web app | `...sim.html?mode=4&responsive=1` | Active — canvas scales down to fill iframe width (capped at 1.0, never scales up) |
+| HTML5 web app | `...sim.html?mode=4&responsive=1` | Active — fit-to-screen scaling |
 | Native iOS | `...sim.html?mode=4` | Inactive — renders at native 400px, no change |
 | Native Android | `...sim.html?mode=4` | Inactive — renders at native 400px, no change |
 
@@ -157,16 +157,47 @@ The sim supports responsive scaling via a URL parameter. This allows the HTML5 w
 
 **To enable for native apps:** add `&responsive=1` to the iframe URL in the Appery.io native build and deploy new store versions.
 
-### postMessage height reporting
+### How it works
 
-When `?responsive=1` is active, after scaling `gjScaleCanvas` posts the actual rendered height to the parent page:
+Scale is calculated as `Math.min(innerWidth/400, gjAvailH/canvasHeight)` — the sim fills available width or height, whichever is the tighter constraint. This ensures the full sim is always visible without scrolling on any device or orientation.
 
+**Verified results:**
+
+| Device | Orientation | Result |
+|--------|------------|--------|
+| iPhone | Portrait | Full width, perfect fit |
+| iPad | Portrait | Full width, perfect fit |
+| iPad | Landscape | Full height, grey space to right (correct — height is constraining dimension) |
+
+### Touch coordinate fix
+
+CSS `transform: scale()` changes visual size but does not remap touch event coordinates. `gjFixTouchCoords()` adds capture-phase touch listeners that intercept events before `Mouse.js`, correct coordinates using `getBoundingClientRect() / gjScale`, then call `Mouse.ondown`/`Mouse.onmove` directly. Without this, buttons and sliders are unresponsive at any scale other than 1.0.
+
+### Bidirectional postMessage
+
+**App → Sim:** parent page sends available height on load and on every resize/rotation:
+```javascript
+function gjSendAvailHeight() {
+  var iframe = document.querySelector('iframe');
+  if (iframe && iframe.contentWindow) {
+    var header = document.querySelector('ion-header') as HTMLElement;
+    var headerH = header ? header.offsetHeight : 60;
+    iframe.contentWindow.postMessage({
+      type: 'gjAvailHeight',
+      availH: window.innerHeight - headerH - 20  // -20 safety buffer for ion-content padding
+    }, '*');
+  }
+}
+setTimeout(gjSendAvailHeight, 800);   // delay allows iframe to initialise
+window.addEventListener('resize', gjSendAvailHeight);
+```
+
+**Sim → App:** after each scale, sim reports its actual rendered height so the iframe resizes to fit:
 ```javascript
 window.parent.postMessage({ type: 'gjSimHeight', height: scaledHeight }, '*');
 ```
 
-The embedding Appery.io page listens for this and resizes the iframe to eliminate grey space at the bottom:
-
+**App listens:**
 ```javascript
 window.addEventListener('message', function(e) {
   if (e.data && e.data.type === 'gjSimHeight') {
@@ -176,7 +207,13 @@ window.addEventListener('message', function(e) {
 });
 ```
 
-**Placement in Appery.io:** `ngOnInit` (fires once on component creation — preferred) rather than `ionViewWillEnter` (fires on every navigation, causes duplicate listeners).
+**Placement in Appery.io:** `ngOnInit` (fires once on component creation). Do not use `ionViewWillEnter` — it fires on every navigation and causes duplicate listeners.
+
+### iframe setup in Appery.io
+```html
+<iframe src="...sim.html?mode=4&responsive=1" width="100%" height="600"></iframe>
+```
+The `height="600"` is the initial value only — it is overridden dynamically by the `gjSimHeight` postMessage.
 
 ---
 
@@ -185,9 +222,9 @@ window.addEventListener('message', function(e) {
 | Date | File | Change |
 |------|------|--------|
 | Feb 2026 | `sim/sim.html` | Viewport: `width=640` → `width=device-width, initial-scale=1` |
-| Feb 2026 | `sim/sim.html` | Added `gjScaleCanvas()` — scales canvas to fill iframe width via CSS transform |
-| Feb 2026 | `sim/sim.html` | Gated scaling behind `?responsive=1` URL param to protect native iOS/Android apps |
-| Feb 2026 | `sim/sim.html` | Added `postMessage` to report actual scaled height to parent page — eliminates grey space at bottom of iframe |
+| Feb 2026 | `sim/sim.html` | Added `gjScaleCanvas()` — fit-to-screen scaling via CSS transform, gated behind `?responsive=1` |
+| Feb 2026 | `sim/sim.html` | Added `gjFixTouchCoords()` — fixes touch coordinate mapping broken by CSS transform |
+| Feb 2026 | `sim/sim.html` | Bidirectional postMessage: sim reports scaled height to app; app sends available height on load and rotation |
 
 ---
 
@@ -197,3 +234,4 @@ window.addEventListener('message', function(e) {
 - **~2020–2025:** GJ customizations made locally and deployed to GCS
 - **Sep 2 2025:** Last modification to local files (identical to GCS)
 - **Feb 2026:** Phase 1 complete — GitHub now holds the canonical GJ version, local and GCS are all in sync
+- **Feb 2026:** Responsive scaling implemented — sim fits iPhone, iPad portrait and landscape correctly via bidirectional postMessage
