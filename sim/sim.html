@@ -63,7 +63,16 @@
 if (new URLSearchParams(location.search).get('responsive') === '1') {
 
   window.gjScale = 1;
+  window.gjAvailH = 9999; // unconstrained until parent sends actual value
   var gjTouchFixed = false;
+
+  // Listen for available height from parent page (sent on load and on rotation)
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'gjAvailHeight') {
+      window.gjAvailH = e.data.availH;
+      gjScaleCanvas();
+    }
+  });
 
   function gjFixTouchCoords(canvas) {
     if (gjTouchFixed) return;
@@ -89,11 +98,13 @@ if (new URLSearchParams(location.search).get('responsive') === '1') {
   function gjScaleCanvas() {
     var c = document.getElementById('canvas');
     if (!c) return;
-    var scale = window.innerWidth / 400;
+    var h = parseInt(c.style.height) || 600;
+    var scaleW = window.innerWidth / 400;
+    var scaleH = window.gjAvailH / h;
+    var scale = Math.min(scaleW, scaleH);
     window.gjScale = scale;
     c.style.transformOrigin = 'top left';
     c.style.transform = 'scale(' + scale + ')';
-    var h = parseInt(c.style.height) || 600;
     var scaledHeight = Math.round(h * scale);
     document.body.style.height = scaledHeight + 'px';
     document.body.style.overflow = 'hidden';
