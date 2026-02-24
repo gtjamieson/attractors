@@ -9,14 +9,20 @@
 
 For each page: change iframe `width="400"` → `width="100%"`, add `&responsive=1` to src URL, add postMessage code to `ngOnInit` in the companion `.ts` file. See `CLAUDE.md` for the code patterns.
 
-| Page | Mode | iframe height | Type | HTML | TS | Done |
-|------|------|--------------|------|------|----|------|
-| `Explainer` | 0 | 340 | Full page | [ ] | [ ] | [ ] |
-| `New_Change` | 3 | 400 | Full page | [ ] | [ ] | [ ] |
-| `Karma` | 1 | 380 | Modal | [ ] | [ ] | [ ] |
-| `Samsara` | 2 | 340 | Modal | [ ] | [ ] | [ ] |
-| `Attachment` | 0 | 340 | Modal | [ ] | [ ] | [ ] |
-| `Cause_effect` | 0, 1, 2 | 340/380/340 | Full page — 3 iframes | [ ] | [ ] | [ ] |
+| Page | Mode | iframe height | Type | Screen title | Cache-buster | HTML | TS | Done |
+|------|------|--------------|------|-------------|-------------|------|----|------|
+| `Explainer` | 0 | 340 | Full page | Quick Explainer | `&v=1` | [ ] | [ ] | [ ] |
+| `New_Change` | 3 | 400 | Full page | _(check app)_ | `&v=1` | [ ] | [ ] | [ ] |
+| `Karma` | 1 | 380 | Modal | _(check app)_ | `&v=1` | [ ] | [ ] | [ ] |
+| `Samsara` | 2 | 340 | Modal | _(check app)_ | `&v=1` | [ ] | [ ] | [ ] |
+| `Attachment` | 0 | 340 | Modal | _(check app)_ | `&v=1` | [ ] | [ ] | [ ] |
+| `Cause_effect` | 0, 1, 2 | 340/380/340 | Full page — 3 iframes | _(check app)_ | `&v=1` | [ ] | [ ] | [ ] |
+
+**Already done:**
+
+| Page | Mode | Screen title | Notes |
+|------|------|-------------|-------|
+| `DIY_enlightenment` | 4 | **Overview** | Complete — `width="100%"`, `&responsive=1&v=6`, postMessage in `ngOnInit` |
 
 **Notes:**
 - `Cause_effect` has 3 iframes (one visible at a time). Use `querySelectorAll('iframe')` — see CLAUDE.md for the specific code pattern.
@@ -80,7 +86,20 @@ Options under consideration:
 
 ---
 
-## 5. Enable responsive scaling for native iOS/Android apps
+## 5. Create CLAUDE.md for TEM_sim repo
+
+**Repo:** `gtjamieson/TEM_sim`
+**Status:** Not started — low priority
+
+No equivalent documentation exists for the TEM_sim app. A CLAUDE.md would capture:
+- Appery.io architecture overview
+- Page inventory (component name → screen title mapping)
+- postMessage pattern for responsive scaling
+- Build and deployment process for HTML5 / iOS / Android
+
+---
+
+## 6. Enable responsive scaling for native iOS/Android apps
 
 **Status:** Blocked — waiting on items 1 and store submission process
 
