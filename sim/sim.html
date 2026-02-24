@@ -5,7 +5,7 @@
 		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 		<meta content="utf-8" http-equiv="encoding">
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=640">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link rel="icon" type="image/png" href="https://storage.googleapis.com/enakr8ia_habitat/metagame_enkr8ia_360px.png">
 
@@ -56,6 +56,22 @@
   // if (new URLSearchParams(location.search).get('mute') === '1') Howler.mute(true);
 </script>
 <script src="https://storage.googleapis.com/enakr8ia_habitat/source_files/attractors-master/sim/Attractors.js"></script>
+
+<!-- GJ: Responsive scaling — scales canvas to fill iframe width -->
+<script>
+function gjScaleCanvas() {
+  var c = document.getElementById('canvas');
+  if (!c) return;
+  var scale = window.innerWidth / 400;
+  c.style.transformOrigin = 'top left';
+  c.style.transform = 'scale(' + scale + ')';
+  var h = parseInt(c.style.height) || 600;
+  document.body.style.height = (h * scale) + 'px';
+  document.body.style.overflow = 'hidden';
+}
+window.addEventListener('load', function() { setTimeout(gjScaleCanvas, 50); });
+window.addEventListener('resize', gjScaleCanvas);
+</script>
 
 </body>
 

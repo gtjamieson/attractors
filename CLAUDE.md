@@ -6,7 +6,7 @@ A fork of Nicky Case's [An Interactive Introduction to Attractor Landscapes](htt
 
 **GitHub:** `https://github.com/gtjamieson/attractors`
 **GCS bucket:** `gs://enakr8ia_habitat` (source files under `source_files/attractors-master/`)
-**Local:** `/Users/enkr8ia/Documents/GitHub/attractors-master/`
+**Local:** `/Users/enkr8ia/Library/Mobile Documents/com~apple~CloudDocs/Claude agent/attractors-master/`
 
 ---
 
@@ -96,6 +96,53 @@ attractors-master/
 ├── social/             # thumbnail.png
 └── de.html, es.html, es2.html, fr.html  # Translation stubs
 ```
+
+---
+
+## Deployment procedure (local → GitHub → GCS)
+
+For any change to sim files, follow this sequence:
+
+### 1. Edit locally
+Make changes in:
+`/Users/enkr8ia/Library/Mobile Documents/com~apple~CloudDocs/Claude agent/attractors-master/`
+
+### 2. Backup current production file on GCS (before overwriting)
+```bash
+CLOUDSDK_PYTHON=/usr/local/bin/python3.13 gsutil cp \
+  gs://enakr8ia_habitat/source_files/attractors-master/sim/<file> \
+  gs://enakr8ia_habitat/source_files/attractors-master/sim/<file>.bak
+```
+
+### 3. Commit & push to GitHub
+```bash
+git add <file>
+git commit -m "description"
+git push
+```
+
+### 4. Copy updated file to GCS (goes live immediately)
+```bash
+CLOUDSDK_PYTHON=/usr/local/bin/python3.13 gsutil cp \
+  "/Users/enkr8ia/Library/Mobile Documents/com~apple~CloudDocs/Claude agent/attractors-master/sim/<file>" \
+  gs://enakr8ia_habitat/source_files/attractors-master/sim/<file>
+```
+
+### Rollback
+```bash
+CLOUDSDK_PYTHON=/usr/local/bin/python3.13 gsutil cp \
+  gs://enakr8ia_habitat/source_files/attractors-master/sim/<file>.bak \
+  gs://enakr8ia_habitat/source_files/attractors-master/sim/<file>
+```
+
+---
+
+## GJ Changes log
+
+| Date | File | Change |
+|------|------|--------|
+| Feb 2026 | `sim/sim.html` | Viewport: `width=640` → `width=device-width, initial-scale=1` |
+| Feb 2026 | `sim/sim.html` | Added `gjScaleCanvas()` — scales canvas to fill iframe width via CSS transform |
 
 ---
 
