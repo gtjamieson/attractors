@@ -61,21 +61,49 @@
 <!-- Native iOS/Android apps omit this param and are unaffected -->
 <script>
 if (new URLSearchParams(location.search).get('responsive') === '1') {
+
+  window.gjScale = 1;
+  var gjTouchFixed = false;
+
+  function gjFixTouchCoords(canvas) {
+    if (gjTouchFixed) return;
+    gjTouchFixed = true;
+    function gjTouchWrapper(callback) {
+      return function(event) {
+        var rect = canvas.getBoundingClientRect();
+        var touch = event.changedTouches[0];
+        var _event = {
+          offsetX: (touch.clientX - rect.left) / window.gjScale,
+          offsetY: (touch.clientY - rect.top) / window.gjScale
+        };
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        callback(_event);
+      };
+    }
+    canvas.addEventListener('touchstart', gjTouchWrapper(Mouse.ondown), true);
+    canvas.addEventListener('touchmove', gjTouchWrapper(Mouse.onmove), true);
+    document.body.addEventListener('touchend', Mouse.onup, true);
+  }
+
   function gjScaleCanvas() {
     var c = document.getElementById('canvas');
     if (!c) return;
     var scale = window.innerWidth / 400;
+    window.gjScale = scale;
     c.style.transformOrigin = 'top left';
     c.style.transform = 'scale(' + scale + ')';
     var h = parseInt(c.style.height) || 600;
     var scaledHeight = Math.round(h * scale);
     document.body.style.height = scaledHeight + 'px';
     document.body.style.overflow = 'hidden';
+    gjFixTouchCoords(c);
     // Tell parent page the actual rendered height
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'gjSimHeight', height: scaledHeight }, '*');
     }
   }
+
   window.addEventListener('load', function() { setTimeout(gjScaleCanvas, 50); });
   window.addEventListener('resize', gjScaleCanvas);
 }
