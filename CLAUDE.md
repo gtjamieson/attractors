@@ -157,6 +157,27 @@ The sim supports responsive scaling via a URL parameter. This allows the HTML5 w
 
 **To enable for native apps:** add `&responsive=1` to the iframe URL in the Appery.io native build and deploy new store versions.
 
+### postMessage height reporting
+
+When `?responsive=1` is active, after scaling `gjScaleCanvas` posts the actual rendered height to the parent page:
+
+```javascript
+window.parent.postMessage({ type: 'gjSimHeight', height: scaledHeight }, '*');
+```
+
+The embedding Appery.io page listens for this and resizes the iframe to eliminate grey space at the bottom:
+
+```javascript
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.type === 'gjSimHeight') {
+    var iframe = document.querySelector('iframe');
+    if (iframe) { iframe.style.height = e.data.height + 'px'; }
+  }
+});
+```
+
+**Placement in Appery.io:** `ngOnInit` (fires once on component creation — preferred) rather than `ionViewWillEnter` (fires on every navigation, causes duplicate listeners).
+
 ---
 
 ## GJ Changes log
@@ -166,6 +187,7 @@ The sim supports responsive scaling via a URL parameter. This allows the HTML5 w
 | Feb 2026 | `sim/sim.html` | Viewport: `width=640` → `width=device-width, initial-scale=1` |
 | Feb 2026 | `sim/sim.html` | Added `gjScaleCanvas()` — scales canvas to fill iframe width via CSS transform |
 | Feb 2026 | `sim/sim.html` | Gated scaling behind `?responsive=1` URL param to protect native iOS/Android apps |
+| Feb 2026 | `sim/sim.html` | Added `postMessage` to report actual scaled height to parent page — eliminates grey space at bottom of iframe |
 
 ---
 
