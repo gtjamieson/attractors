@@ -68,8 +68,13 @@ if (new URLSearchParams(location.search).get('responsive') === '1') {
     c.style.transformOrigin = 'top left';
     c.style.transform = 'scale(' + scale + ')';
     var h = parseInt(c.style.height) || 600;
-    document.body.style.height = (h * scale) + 'px';
+    var scaledHeight = Math.round(h * scale);
+    document.body.style.height = scaledHeight + 'px';
     document.body.style.overflow = 'hidden';
+    // Tell parent page the actual rendered height
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'gjSimHeight', height: scaledHeight }, '*');
+    }
   }
   window.addEventListener('load', function() { setTimeout(gjScaleCanvas, 50); });
   window.addEventListener('resize', gjScaleCanvas);
