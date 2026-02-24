@@ -128,6 +128,12 @@ CLOUDSDK_PYTHON=/usr/local/bin/python3.13 gsutil cp \
   gs://enakr8ia_habitat/source_files/attractors-master/sim/<file>
 ```
 
+### 5. Restore public access (gsutil cp strips ACL — must do this every time)
+```bash
+CLOUDSDK_PYTHON=/usr/local/bin/python3.13 gsutil acl ch -u AllUsers:R \
+  gs://enakr8ia_habitat/source_files/attractors-master/sim/<file>
+```
+
 ### Rollback
 ```bash
 CLOUDSDK_PYTHON=/usr/local/bin/python3.13 gsutil cp \
@@ -137,12 +143,29 @@ CLOUDSDK_PYTHON=/usr/local/bin/python3.13 gsutil cp \
 
 ---
 
+## Responsive scaling — URL parameter
+
+The sim supports responsive scaling via a URL parameter. This allows the HTML5 web app to opt in while native iOS/Android apps remain unaffected until new store versions are ready.
+
+| Platform | iframe URL | Scaling |
+|----------|-----------|---------|
+| HTML5 web app | `...sim.html?mode=4&responsive=1` | Active — canvas scales down to fill iframe width (capped at 1.0, never scales up) |
+| Native iOS | `...sim.html?mode=4` | Inactive — renders at native 400px, no change |
+| Native Android | `...sim.html?mode=4` | Inactive — renders at native 400px, no change |
+
+**Works for all modes** (0–4). Width is always 400px; height is read dynamically per mode (340/380/340/400/600px).
+
+**To enable for native apps:** add `&responsive=1` to the iframe URL in the Appery.io native build and deploy new store versions.
+
+---
+
 ## GJ Changes log
 
 | Date | File | Change |
 |------|------|--------|
 | Feb 2026 | `sim/sim.html` | Viewport: `width=640` → `width=device-width, initial-scale=1` |
 | Feb 2026 | `sim/sim.html` | Added `gjScaleCanvas()` — scales canvas to fill iframe width via CSS transform |
+| Feb 2026 | `sim/sim.html` | Gated scaling behind `?responsive=1` URL param to protect native iOS/Android apps |
 
 ---
 
