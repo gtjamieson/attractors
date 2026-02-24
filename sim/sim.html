@@ -64,7 +64,7 @@ if (new URLSearchParams(location.search).get('responsive') === '1') {
   function gjScaleCanvas() {
     var c = document.getElementById('canvas');
     if (!c) return;
-    var scale = Math.min(window.innerWidth / 400, 1);
+    var scale = window.innerWidth / 400;
     c.style.transformOrigin = 'top left';
     c.style.transform = 'scale(' + scale + ')';
     var h = parseInt(c.style.height) || 600;
