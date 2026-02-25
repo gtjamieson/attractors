@@ -243,8 +243,8 @@ The `height="600"` is the initial value only — it is overridden dynamically by
 This Claude Code project covers **both** the attractors HTML5 sim and the TEM_sim Ionic app that wraps it.
 
 **Repo:** `gtjamieson/tem_sim`
-**Stack:** Angular/Ionic — source files editable directly via GitHub (no GCS deployment needed)
-**Access:** `gh api "repos/gtjamieson/tem_sim/contents/src/app/..."` or clone locally
+**Stack:** Angular/Ionic — built in Appery.io (do not edit source directly)
+**Access:** `gh api "repos/gtjamieson/tem_sim/contents/src/app/..."` to review committed source
 
 ### Page structure
 
@@ -262,9 +262,16 @@ Two navigational paths built around the attractor sim:
 
 ### Workflow for TEM_sim changes
 
-- Edit HTML/TS source via Appery.io (primary) or directly in the repo
-- Commit and push to `gtjamieson/tem_sim` — no GCS step required
-- Responsive scaling rollout in progress — see `TASKS.md` for page-by-page status
+**Same as TEM_lite — do NOT edit source code directly.**
+
+1. Provide code recommendations (HTML/TS snippets)
+2. User applies changes in Appery.io model
+3. User republishes and tests
+4. Once confirmed, user commits to `gtjamieson/tem_sim`
+5. Review committed source via `gh api` if needed
+
+Work one page at a time — provide recommendations, wait for confirmation before moving to the next.
+Responsive scaling rollout in progress — see `TASKS.md` for page-by-page status.
 
 ### Obsidian Vault Context (TEM Theory)
 

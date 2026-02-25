@@ -5,29 +5,23 @@
 ## 1. Responsive scaling — roll out to remaining TEM_sim pages
 
 **Repo:** `gtjamieson/TEM_sim`
-**Status:** In progress — `DIY_enlightenment` done, 6 pages remaining
+**Status:** COMPLETE — all pages done (Feb 2026)
 
-For each page: change iframe `width="400"` → `width="100%"`, add `&responsive=1` to src URL, add postMessage code to `ngOnInit` in the companion `.ts` file. See `CLAUDE.md` for the code patterns.
+| Page | Type | Approach | Done |
+|------|------|---------|------|
+| `DIY_enlightenment` | Full page | `width="100%"`, `&responsive=1&v=6`, full postMessage in `ngOnInit` | ✅ |
+| `Explainer` | Full page | `width="100%"`, `&responsive=1&v=1`, full postMessage in `ngOnInit` | ✅ |
+| `New_Change` | Full page | `width="100%"`, `&responsive=1&v=1`, full postMessage in `ngOnInit` | ✅ |
+| `Karma` | Modal | `width="400"`, `&v=1` only — no responsive (iPad modal viewport bug) | ✅ |
+| `Samsara` | Modal | `width="400"`, `&v=1` only — no responsive (iPad modal viewport bug) | ✅ |
+| `Attachment` | Modal | `width="400"`, `&v=1` only — no responsive (iPad modal viewport bug) | ✅ |
+| `Cause_effect` | Full page | 3 hidden iframes deleted — no changes needed | ✅ |
 
-| Page | Mode | iframe height | Type | Screen title | Cache-buster | HTML | TS | Done |
-|------|------|--------------|------|-------------|-------------|------|----|------|
-| `Explainer` | 0 | 340 | Full page | Quick Explainer | `&v=1` | [ ] | [ ] | [ ] |
-| `New_Change` | 3 | 400 | Full page | _(check app)_ | `&v=1` | [ ] | [ ] | [ ] |
-| `Karma` | 1 | 380 | Modal | _(check app)_ | `&v=1` | [ ] | [ ] | [ ] |
-| `Samsara` | 2 | 340 | Modal | _(check app)_ | `&v=1` | [ ] | [ ] | [ ] |
-| `Attachment` | 0 | 340 | Modal | _(check app)_ | `&v=1` | [ ] | [ ] | [ ] |
-| `Cause_effect` | 0, 1, 2 | 340/380/340 | Full page — 3 iframes | _(check app)_ | `&v=1` | [ ] | [ ] | [ ] |
+**Key learnings:**
+- Modal pages: do NOT use `&responsive=1`. On iPad, `window.innerWidth` inside an iframe in a modal card returns the full device width (~768px) rather than the iframe's rendered width, causing massive upscaling. Native `width="400"` fits iPad modal cards naturally.
+- Full-page views: `&responsive=1` works correctly — iframe fills page width and `window.innerWidth` matches.
 
-**Already done:**
-
-| Page | Mode | Screen title | Notes |
-|------|------|-------------|-------|
-| `DIY_enlightenment` | 4 | **Overview** | Complete — `width="100%"`, `&responsive=1&v=6`, postMessage in `ngOnInit` |
-
-**Notes:**
-- `Cause_effect` has 3 iframes (one visible at a time). Use `querySelectorAll('iframe')` — see CLAUDE.md for the specific code pattern.
-- Modal pages (`Karma`, `Samsara`, `Attachment`) — `window.innerHeight` reflects modal height, `ion-header` is the modal's own header. Same code pattern applies.
-- After completing all pages, enable responsive scaling for native iOS/Android builds by adding `&responsive=1` to their iframe URLs and submitting new store versions.
+**Next step:** Enable responsive scaling for native iOS/Android builds — see item 6.
 
 ---
 
