@@ -235,3 +235,48 @@ The `height="600"` is the initial value only — it is overridden dynamically by
 - **Sep 2 2025:** Last modification to local files (identical to GCS)
 - **Feb 2026:** Phase 1 complete — GitHub now holds the canonical GJ version, local and GCS are all in sync
 - **Feb 2026:** Responsive scaling implemented — sim fits iPhone, iPad portrait and landscape correctly via bidirectional postMessage
+
+---
+
+## TEM_sim — Ionic wrapper app
+
+This Claude Code project covers **both** the attractors HTML5 sim and the TEM_sim Ionic app that wraps it.
+
+**Repo:** `gtjamieson/tem_sim`
+**Stack:** Angular/Ionic — source files editable directly via GitHub (no GCS deployment needed)
+**Access:** `gh api "repos/gtjamieson/tem_sim/contents/src/app/..."` or clone locally
+
+### Page structure
+
+Two navigational paths built around the attractor sim:
+
+**Path of Attainment** (`Cause_effect` page — modes 0, 1, 2) — the problem:
+- `Attachment` (mode 0) — clinging rooted in Fear & Desire
+- `Karma` (mode 1) — wilful doing, good and bad choices equivalent
+- `Samsara` (mode 2) — the vicious cycle
+
+**Path of Acceptance** (`New_Change` page — mode 3) — the pivot:
+- Fear and Desire as levers; expanding self-awareness changes the underlying system
+
+**Supporting pages:** `Explainer` (mode 0), `Attractor_landscape`, `Fear_Desire`, `DIY_enlightenment` (mode 4 — full sim), `Lifes_metagame`, `TEM`, `Main`, `About`, `Disclaimer`
+
+### Workflow for TEM_sim changes
+
+- Edit HTML/TS source via Appery.io (primary) or directly in the repo
+- Commit and push to `gtjamieson/tem_sim` — no GCS step required
+- Responsive scaling rollout in progress — see `TASKS.md` for page-by-page status
+
+### Obsidian Vault Context (TEM Theory)
+
+Source of truth for TEM theory — load with the Read tool only when relevant to the current task.
+
+Base path: `/Users/enkr8ia/Documents/Obsidian Vault/Claude_agent/TEM_lite/Context/`
+
+| File | When to load |
+|------|-------------|
+| `The Enlightenment Method (TEM) - A Dantean Blueprint for modern transformation.md` | TEM theory, Virgil/Beatrice framework, journey structure |
+| `A modern map for inner transformation - Dantes ancient allegory ..md` | Pattern philosophy, ego/resistance framing, Hell taxonomy |
+| `Curved nature of reality.md` | TEM cosmology, attractor/curve concepts, concave/convex model |
+| `Dantes ancient journey of the soul reinterpreted - lifes metagame.md` | Journey stage design, passive→active participant arc |
+| `Guides_ Human vs AI Catalysts.md` | Virgil/AI guide role, empty presence, LH/RH distinction |
+| `Pattern Language.md` | Pattern formats, somatic design principles, Dantean circle mapping |
