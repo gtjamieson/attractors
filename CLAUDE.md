@@ -19,6 +19,7 @@ A fork of Nicky Case's [An Interactive Introduction to Attractor Landscapes](htt
 | `sim/Attractors.js:902` | Over-button label changed to `"Desire"` |
 | `sim/Attractors.js:1025-1026` | `water1`/`water2` images point to `laughingBuddha.png` / `surprisedBuddha.png` |
 | `sim/sim.html` | Howler globally muted (`Howler.mute(true)`) after load |
+| `sim/sim.html` | `Attractors.js` script tag has `?v=11` for cache busting |
 | `index.html` | Only mode=4 iframe active (full sim); modes 1–3 commented out |
 
 ---
@@ -153,7 +154,7 @@ The sim supports responsive scaling via a URL parameter. This allows the HTML5 w
 | Native iOS | `...sim.html?mode=4` | Inactive — renders at native 400px, no change |
 | Native Android | `...sim.html?mode=4` | Inactive — renders at native 400px, no change |
 
-**Works for all modes** (0–4). Width is always 400px; height is read dynamically per mode (340/380/340/400/600px).
+**Works for all modes** (0–6). Width is always 400px; height is read dynamically per mode (340/380/340/400/600/380/400px).
 
 **To enable for native apps:** add `&responsive=1` to the iframe URL in the Appery.io native build and deploy new store versions.
 
@@ -217,6 +218,38 @@ The `height="600"` is the initial value only — it is overridden dynamically by
 
 ---
 
+## Custom sim modes
+
+| Mode | Canvas H | Components | Notes |
+|------|----------|-----------|-------|
+| 0 | 340px | PopulationSlider (NO_GROWTH), fish, less/moreButton | Population locked, hint visible |
+| 1 | 380px | PopulationSlider (SHOW_LABELS), fish, less/moreButton | Standard interactive |
+| 2 | 340px | PopulationSlider (SHOW_LABELS), hill | Mouse offset (0,-200) |
+| 3 | 400px | PopulationSlider, hill, HillShaper | Mouse offset (0,-200); HillShaper hints visible |
+| 4 | 600px | PopulationSlider (SHOW_LABELS), fish, less/moreButton, hill, HillShaper | Full sim |
+| 5 | 380px | PopulationSlider (SHOW_LABELS), fish, less/moreButton | Mode 1 minus threshold lines, velocity arrow, direction arrows in slider |
+| 6 | 400px | PopulationSlider (SHOW_LABELS), hill | Mouse offset (0,-200); no HillShaper; auto-animation: thresholdUnder 200→350 after 500ms |
+
+### Mode 6 auto-animation detail
+`gjMode6Animating` starts false, set true after 500ms delay. Each frame: `thresholdUnder += (350 - thresholdUnder) * 0.012`. Stops and locks at 350. Hill recalculates each frame so landscape shifts organically.
+
+---
+
+## Cache-busting protocol
+
+`sim/sim.html` loads `Attractors.js` with a `?v=N` query string to bust browser cache:
+```html
+<script src="https://storage.googleapis.com/...sim/Attractors.js?v=11"></script>
+```
+
+**Whenever Attractors.js changes, bump the version in BOTH places:**
+1. `sim/sim.html` — the `?v=N` on the script tag
+2. TEM_lite iframe src — the `?v=N` on the `sim.html` URL
+
+Both must move together and use the same number. Current version: **v=11**.
+
+---
+
 ## GJ Changes log
 
 | Date | File | Change |
@@ -225,6 +258,9 @@ The `height="600"` is the initial value only — it is overridden dynamically by
 | Feb 2026 | `sim/sim.html` | Added `gjScaleCanvas()` — fit-to-screen scaling via CSS transform, gated behind `?responsive=1` |
 | Feb 2026 | `sim/sim.html` | Added `gjFixTouchCoords()` — fixes touch coordinate mapping broken by CSS transform |
 | Feb 2026 | `sim/sim.html` | Bidirectional postMessage: sim reports scaled height to app; app sends available height on load and rotation |
+| Feb 2026 | `sim/Attractors.js` | Added Mode 5 — Mode 1 without threshold lines, velocity arrow, direction arrows |
+| Feb 2026 | `sim/Attractors.js` | Added Mode 6 — Mode 3 without HillShaper; auto-animation thresholdUnder 200→350 |
+| Feb 2026 | `sim/sim.html` | Added `?v=11` to Attractors.js script tag for cache busting |
 
 ---
 
@@ -235,6 +271,7 @@ The `height="600"` is the initial value only — it is overridden dynamically by
 - **Sep 2 2025:** Last modification to local files (identical to GCS)
 - **Feb 2026:** Phase 1 complete — GitHub now holds the canonical GJ version, local and GCS are all in sync
 - **Feb 2026:** Responsive scaling implemented — sim fits iPhone, iPad portrait and landscape correctly via bidirectional postMessage
+- **Feb 2026:** Modes 5 and 6 added; cache-busting `?v=11` added to Attractors.js script tag in sim.html
 
 ---
 
