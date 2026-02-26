@@ -1,6 +1,26 @@
 # TEM Apps — Problem Statement & Strategic Context
 
-*Working document — to be fleshed out*
+*Working document — updated Feb 2026*
+
+---
+
+## The Design Constraint
+
+**TEM must feel different by being more accurate, not more elaborate.**
+
+The world is full of frameworks for people in pain. TEM is different — but layering Buddhist vocabulary, Dantean structure, and attractor physics on top of each other produces more noise, not less. Each layer felt like differentiation during design; together they became the cognitive load that causes users to leave.
+
+What actually cuts through is precision. Not a framework — a recognition. The moment that lands is the one that names exactly what the person is experiencing right now, in a way they've never heard named before.
+
+The attractor sim already does this once: clicking "good choice / bad choice" and getting the same outcome. That moment doesn't need the vocabulary around it. It lands because it's true and the user has lived it.
+
+**The governing design question for every page, every interaction, every line of copy:**
+
+> *What is the single most precise thing TEM can show this person — before they've had to learn anything — that makes them think: "that's me, and I've never seen it named like that before"?*
+
+If an element doesn't serve that question, it is cognitive load, not content.
+
+**Corollary:** Both apps have suffered from being designed to demonstrate the intelligence of the model rather than to serve the user's actual need. The user's need is recognition, not education. These require different design choices. Education feels more impressive to build. Recognition is harder and rarer.
 
 ---
 
@@ -125,17 +145,72 @@ An AI-powered guide app. Virgil (Claude Sonnet 4.5 via Cloudflare Worker) meets 
 
 ---
 
-## Open Questions
+## Architecture Decision — One App
 
-*(To flesh out)*
+**TEM_lite absorbs the sim. TEM_sim is retired.**
 
-1. Where do people actually drop off — and is it the same point in both apps?
-2. What does "stickiness" look like for TEM specifically — daily practice, crisis support, milestone recognition, something else?
-3. What is the minimum viable "aha" that creates genuine pull to return — and what creates it reliably?
-4. How should TEM_sim and TEM_lite relate to each other in the user's journey — are they sequential, parallel, or integrated?
-5. What does the ideal user arc look like across both apps — entry state to sustained engagement?
-6. Is the counter-intuitive message best delivered through the sim (felt demonstration), Virgil (relational dialogue), or the Encounter page (somatic practice) — or all three in sequence?
+### Rationale
+
+TEM_sim was built around the sim as the hero, surrounded by explanation. But the sim's most powerful moment — good choice / bad choice, same outcome — only lands when the user already has their own struggle in mind. Virgil establishes that struggle first. The correct sequence is:
+
+> Virgil names the dilemma → sim shows the structural reason why effort hasn't worked
+
+In that order, the sim is a revelation. In TEM_sim's order, it is a demonstration looking for a problem to solve.
+
+Two apps also meant two metaphor systems (Buddhist / Dante) with no bridge, double the maintenance, double the drift, and double the cognitive load for any user who encountered both.
+
+The Sim page already exists in TEM_lite. The infrastructure is there. The problem was placement and sequence, not absence.
+
+### What changes
+
+- TEM_sim is retired — no further development
+- The Buddhist vocabulary (attachment, karma, samsara) is retired — Dantean framing is the single consistent metaphor system
+- TEM_lite becomes the sole app
+- The standalone Sim page is retired — the sim is embedded directly into the pages that need it, in the mode that serves each page's specific purpose
+- The current TEM_lite page sequence is revised (see Journey Design below)
+
+### Journey Design — Revised Page Sequence
+
+The sim appears twice, in different modes, each doing specific work:
+
+| Page | Stage | Sim | Purpose |
+|------|-------|-----|---------|
+| Launch | Threshold | — | Entry — met, not redirected |
+| Patterns | Inferno | Mode 1 (Karma) — interactive | Visual proof: good choice / bad choice, same outcome. "Here's why the pattern persists regardless of what you do." Interactive is appropriate — clicking both buttons and getting the same result *is* the recognition. |
+| Chat | Purgatorio | — | Virgil makes it personal — "this is *your* version of it." Creates the conditions to stop fixing. |
+| Encounter | Beatrice handoff | Mode 3 (New_Change) — constrained | Pivot from doing to being. Sim visible but not fully interactive — animating to show Fear decreasing, landscape shifting. "Notice what happens" not "try this." Interactive manipulation would re-engage doing mode. |
+| TEM | Reference | — | The method explained |
+
+**Why two modes, not one:**
+Mode 1 proves why nothing changes. Mode 3 shows what actually can. That is not repetition — it is a coherent arc told in two visual moments, each serving a different stage of recognition.
+
+**The Encounter design constraint:**
+The Encounter page must not present itself as something to do. No instructions, no steps, no technique. Any "how to" language immediately re-engages the doing orientation and the page undermines itself. The form must embody the content — presence invited, not effort directed. Virgil's handoff to Encounter is itself the pivot from doing to being.
+
+### Stickiness
+
+Crisis-driven, not habit-driven. TEM's message is anti-goal-oriented — streaks and milestones are Path of Attainment mechanisms and are wrong for this app. The user returns when the pattern reasserts itself and they know the app is useful in that moment. This requires the first session to produce a real shift, not just an intellectual one. If it does, the user knows where to go next time they're stuck.
+
+### The Minimum Viable "Aha"
+
+Not the sim moment — that's structural recognition, cognitive. The pull that brings people back is: *"I just noticed myself doing the thing while I was doing it."* Real-time pattern recognition at the felt-sense level. That is what the Encounter page exists to produce. Cognitive insights fade. A somatic moment lingers. Encounter is therefore the most important page in the app — and must be the easiest to return to directly.
+
+### Ideal User Arc
+
+> Crisis / stuck ("I want to fix X") → Launch (met, not redirected) → Patterns + sim Mode 1 (recognises the pattern visually — not diagnosed) → Chat (Virgil names their specific version — feels seen) → Encounter + sim Mode 3 (pivot from doing to being — notices Fear directly) → Return at next crisis, knowing where to go
+
+The arc is not linear in practice. But the sequence matters on first use — each step primes the next. On return, the user should be able to go directly to Encounter without repeating the full journey.
+
+### How the Inversion Is Delivered
+
+All three mechanisms, in sequence, each doing different work:
+
+- **Patterns + sim Mode 1** — structural/visual: *"here's the landscape you're living in, and why effort doesn't change it"*
+- **Chat / Virgil** — relational: *"this is your specific version of that pattern"* — creates conditions to stop
+- **Encounter + sim Mode 3** — somatic: *"this is what Fear actually feels like right now, and what happens when it shifts"*
+
+The inversion does not happen at any single point. It emerges from the sequence. It lands — if it lands — at Encounter. "Fix X" becomes "the fixing is the problem" only when felt, not when understood.
 
 ---
 
-*Last updated: Feb 2026*
+*Last updated: Feb 2026 — architecture decision; journey redesigned; open questions resolved*
