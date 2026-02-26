@@ -238,40 +238,13 @@ The `height="600"` is the initial value only — it is overridden dynamically by
 
 ---
 
-## TEM_sim — Ionic wrapper app
+## TEM_sim — Retired Feb 2026
 
-This Claude Code project covers **both** the attractors HTML5 sim and the TEM_sim Ionic app that wraps it.
+TEM_sim was an Ionic/Angular app wrapping the attractor sim with explanatory pages. It has been retired — TEM_lite is now the sole app. The attractors sim is embedded directly within TEM_lite's Patterns (mode 1) and Encounter (mode 3) pages.
 
-**Repo:** `gtjamieson/tem_sim`
-**Stack:** Angular/Ionic — built in Appery.io (do not edit source directly)
-**Access:** `gh api "repos/gtjamieson/tem_sim/contents/src/app/..."` to review committed source
+Repo `gtjamieson/tem_sim` is archived. No further development.
 
-### Page structure
-
-Two navigational paths built around the attractor sim:
-
-**Path of Attainment** (`Cause_effect` page — modes 0, 1, 2) — the problem:
-- `Attachment` (mode 0) — clinging rooted in Fear & Desire
-- `Karma` (mode 1) — wilful doing, good and bad choices equivalent
-- `Samsara` (mode 2) — the vicious cycle
-
-**Path of Acceptance** (`New_Change` page — mode 3) — the pivot:
-- Fear and Desire as levers; expanding self-awareness changes the underlying system
-
-**Supporting pages:** `Explainer` (mode 0), `Attractor_landscape`, `Fear_Desire`, `DIY_enlightenment` (mode 4 — full sim), `Lifes_metagame`, `TEM`, `Main`, `About`, `Disclaimer`
-
-### Workflow for TEM_sim changes
-
-**Same as TEM_lite — do NOT edit source code directly.**
-
-1. Provide code recommendations (HTML/TS snippets)
-2. User applies changes in Appery.io model
-3. User republishes and tests
-4. Once confirmed, user commits to `gtjamieson/tem_sim`
-5. Review committed source via `gh api` if needed
-
-Work one page at a time — provide recommendations, wait for confirmation before moving to the next.
-Responsive scaling rollout in progress — see `TASKS.md` for page-by-page status.
+See `TEM_lite/STRATEGY.md` for the architecture decision and rationale.
 
 ### Obsidian Vault Context (TEM Theory)
 
