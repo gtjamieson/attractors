@@ -65,6 +65,9 @@ function init(){
 		population.NO_GROWTH = true;
 		population.n = 500;
 	}
+	if(SIM_MODE==6){
+		population.thresholdUnder = 200;
+	}
 
 	if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==2 || SIM_MODE==3 || SIM_MODE==4 || SIM_MODE==5 || SIM_MODE==6){
 		populationSlider = new PopulationSlider(population);
@@ -147,11 +150,11 @@ function update(){
 
 		canvas.setAttribute("cursor", "none");
 
-		// Mode 6 auto-animation
+		// Mode 6 auto-animation: thresholdUnder animates from ~200 UP to ~350
 		if(SIM_MODE==6 && gjMode6Animating){
-			population.thresholdUnder -= (population.thresholdUnder - 80) * 0.012;
-			if(population.thresholdUnder < 81){
-				population.thresholdUnder = 80;
+			population.thresholdUnder += (350 - population.thresholdUnder) * 0.012;
+			if(population.thresholdUnder > 349){
+				population.thresholdUnder = 350;
 				gjMode6Animating = false;
 			}
 		}
