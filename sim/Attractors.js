@@ -450,6 +450,7 @@ function PopulationSlider(population){
 		if(!self.NO_GROWTH){
 
 			// Thresholds...
+			if(SIM_MODE!=5){
 			ctx.strokeStyle = "rgba(0,0,0,0.25)";
 			ctx.lineWidth = 1;
 			var x = _popToSlider(pop.thresholdUnder);
@@ -460,8 +461,10 @@ function PopulationSlider(population){
 			ctx.moveTo(x, self.top-self.buttonRadius);
 			ctx.lineTo(x, self.top+295);
 			ctx.stroke();
+			}
 
 			// Velocity Arrow
+			if(SIM_MODE!=5){
 			ctx.fillStyle = "#fff";
 			var velocity = pop.calculateVelocity(pop.n);
 			var w = 10;
@@ -483,8 +486,10 @@ function PopulationSlider(population){
 				ctx.lineTo(-w, h/2); // bottom-left
 				ctx.fill();
 			ctx.restore();
+			}
 
 			// Arrows
+			if(SIM_MODE!=5){
 			ctx.strokeStyle = "#bbb";
 			ctx.lineWidth = 2;
 			ctx.save();
@@ -493,6 +498,7 @@ function PopulationSlider(population){
 				_drawArrow(ctx, pop.thresholdUnder, pop.thresholdOver, 1);
 				_drawArrow(ctx, pop.thresholdOver, pop.max+36, -1);
 			ctx.restore();
+			}
 
 			if(self.SHOW_LABELS){
 
