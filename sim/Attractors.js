@@ -28,7 +28,7 @@ if(SIM_MODE==1 || SIM_MODE==5){
 if(SIM_MODE==2){
 	canvas.style.height = "340px";
 }
-if(SIM_MODE==3){
+if(SIM_MODE==3 || SIM_MODE==6){
 	canvas.style.height = "400px";
 }
 // GJ
@@ -41,7 +41,7 @@ var ctx = canvas.getContext('2d');
 // INIT
 window.onload = function(){
 	Mouse.init(canvas);
-	if(SIM_MODE==2 || SIM_MODE==3){
+	if(SIM_MODE==2 || SIM_MODE==3 || SIM_MODE==6){
 		Mouse.offset(0,-200);
 	}
 	init();
@@ -66,17 +66,17 @@ function init(){
 		population.n = 500;
 	}
 
-	if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==2 || SIM_MODE==3 || SIM_MODE==4 || SIM_MODE==5){
+	if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==2 || SIM_MODE==3 || SIM_MODE==4 || SIM_MODE==5 || SIM_MODE==6){
 		populationSlider = new PopulationSlider(population);
 		if(SIM_MODE==0) populationSlider.NO_GROWTH = true;
-		if(SIM_MODE==1 || SIM_MODE==2 || SIM_MODE==4 || SIM_MODE==5) populationSlider.SHOW_LABELS = true;
+		if(SIM_MODE==1 || SIM_MODE==2 || SIM_MODE==4 || SIM_MODE==5 || SIM_MODE==6) populationSlider.SHOW_LABELS = true;
 	}
 
 	if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==4 || SIM_MODE==5){
 		fish = new Fish(population);
 	}
 
-	if(SIM_MODE==2 || SIM_MODE==3 || SIM_MODE==4){
+	if(SIM_MODE==2 || SIM_MODE==3 || SIM_MODE==4 || SIM_MODE==6){
 		hill = new Hill(population);
 	}
 
@@ -126,6 +126,11 @@ function init(){
 		hillShaper.hintOver.visible = true;
 	}
 
+	// Mode 6 auto-animation
+	if(SIM_MODE==6){
+		setTimeout(function(){ gjMode6Animating = true; }, 500);
+	}
+
 	// Update
 	update();
 
@@ -134,12 +139,22 @@ function init(){
 // UPDATE
 var HILL_Y = 0;
 var GASPING = false;
+var gjMode6Animating = false;
 function update(){
 
 	// Only if you can SEE ME
 	if(window.IS_IN_SIGHT){
 
 		canvas.setAttribute("cursor", "none");
+
+		// Mode 6 auto-animation
+		if(SIM_MODE==6 && gjMode6Animating){
+			population.thresholdUnder -= (population.thresholdUnder - 80) * 0.012;
+			if(population.thresholdUnder < 81){
+				population.thresholdUnder = 80;
+				gjMode6Animating = false;
+			}
+		}
 
 		// Model
 		if(population) population.update();
@@ -157,7 +172,7 @@ function update(){
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.save();
 		ctx.scale(2,2);
-		if(SIM_MODE==2 || SIM_MODE==3){
+		if(SIM_MODE==2 || SIM_MODE==3 || SIM_MODE==6){
 			ctx.translate(0,-200);
 			HILL_Y = -200;
 		}
