@@ -22,7 +22,7 @@ if(SIM_MODE==0){
 	//canvas.style.height = 350;
 	canvas.style.height = "340px";
 }
-if(SIM_MODE==1){
+if(SIM_MODE==1 || SIM_MODE==5){
 	canvas.style.height = "380px";
 }
 if(SIM_MODE==2){
@@ -66,13 +66,13 @@ function init(){
 		population.n = 500;
 	}
 
-	if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==2 || SIM_MODE==3 || SIM_MODE==4){
+	if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==2 || SIM_MODE==3 || SIM_MODE==4 || SIM_MODE==5){
 		populationSlider = new PopulationSlider(population);
 		if(SIM_MODE==0) populationSlider.NO_GROWTH = true;
-		if(SIM_MODE==1 || SIM_MODE==2 || SIM_MODE==4) populationSlider.SHOW_LABELS = true;
+		if(SIM_MODE==1 || SIM_MODE==2 || SIM_MODE==4 || SIM_MODE==5) populationSlider.SHOW_LABELS = true;
 	}
 
-	if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==4){
+	if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==4 || SIM_MODE==5){
 		fish = new Fish(population);
 	}
 
@@ -87,7 +87,7 @@ function init(){
 	// Buttons
 	var externalVelocity = 16;
 	if(SIM_MODE==0) externalVelocity=8;
-	if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==4){
+	if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==4 || SIM_MODE==5){
 		lessButton = new Button({
 			x:200, y:25,
 			width:150, height:35,
@@ -168,7 +168,7 @@ function update(){
 
 			// The Water
 			if(fish) fish.draw(ctx);
-			if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==4){
+			if(SIM_MODE==0 || SIM_MODE==1 || SIM_MODE==4 || SIM_MODE==5){
 				if(!GASPING){
 					if(population.n<0.1){
 						GASPING = true;
