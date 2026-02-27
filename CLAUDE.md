@@ -248,6 +248,8 @@ The `height="600"` is the initial value only — it is overridden dynamically by
 
 Both must move together and use the same number. Current version: **v=11**.
 
+**Production risk from adding `?v=N` to Attractors.js: none.** GCS ignores query strings on static file requests — `Attractors.js?v=11` serves identical content to `Attractors.js`. Existing apps without a `?v=N` on their `sim.html` URL are unaffected: users with a cached `sim.html` stay on the old version (same behaviour as before), and new users loading `sim.html` fresh get the correct updated file. Verified Feb 2026 against TEM_lite and TEM_sim (modes 0–4 unaffected; Mode 5/6 code fully gated by `SIM_MODE` checks).
+
 ---
 
 ## GJ Changes log
