@@ -1058,7 +1058,7 @@ var labels = {};
 //"underpopulation", "overpopulation", "population_grows"].forEach(function(label){
 //	labels[label] = window.parent.document.getElementById("label_"+label).innerHTML.trim();
 //});
-labels.population = "          Play life's metagame";
+labels.population = "          Yield else repeat";
 labels.catchFish = 'Bad choices';
 labels.releaseFish = 'Good choices';
 labels.underpopulation = 'Mental health';
