@@ -533,8 +533,8 @@ function PopulationSlider(population){
 		//		var label = labels.population+" "+Math.round(pop.n/10);
 				ctx.font = '23px sans-serif';
 				ctx.fillStyle = "#000";
-				ctx.textAlign = "left";
-				ctx.fillText(labels.population, self.left-self.buttonRadius, self.top-35);
+				ctx.textAlign = "center";
+				ctx.fillText(labels.population, 200, self.top-35);
 
 			}
 
@@ -1058,7 +1058,7 @@ var labels = {};
 //"underpopulation", "overpopulation", "population_grows"].forEach(function(label){
 //	labels[label] = window.parent.document.getElementById("label_"+label).innerHTML.trim();
 //});
-labels.population = "          Yield else repeat";
+labels.population = "Yield else repeat";
 labels.catchFish = 'Bad choices';
 labels.releaseFish = 'Good choices';
 labels.underpopulation = 'Mental health';
