@@ -19,7 +19,7 @@ A fork of Nicky Case's [An Interactive Introduction to Attractor Landscapes](htt
 | `sim/Attractors.js:902` | Over-button label changed to `"Desire"` |
 | `sim/Attractors.js:1025-1026` | `water1`/`water2` images point to `laughingBuddha.png` / `surprisedBuddha.png` |
 | `sim/sim.html` | Howler globally muted (`Howler.mute(true)`) after load |
-| `sim/sim.html` | `Attractors.js` script tag has `?v=11` for cache busting |
+| `sim/sim.html` | `Attractors.js` script tag has `?v=14` for cache busting |
 | `index.html` | Only mode=4 iframe active (full sim); modes 1–3 commented out |
 
 ---
@@ -239,16 +239,16 @@ The `height="600"` is the initial value only — it is overridden dynamically by
 
 `sim/sim.html` loads `Attractors.js` with a `?v=N` query string to bust browser cache:
 ```html
-<script src="https://storage.googleapis.com/...sim/Attractors.js?v=11"></script>
+<script src="https://storage.googleapis.com/...sim/Attractors.js?v=14"></script>
 ```
 
 **Whenever Attractors.js changes, bump the version in BOTH places:**
 1. `sim/sim.html` — the `?v=N` on the script tag
 2. TEM_lite iframe src — the `?v=N` on the `sim.html` URL
 
-Both must move together and use the same number. Current version: **v=11**.
+Both must move together and use the same number. Current version: **v=14**.
 
-**Production risk from adding `?v=N` to Attractors.js: none.** GCS ignores query strings on static file requests — `Attractors.js?v=11` serves identical content to `Attractors.js`. Existing apps without a `?v=N` on their `sim.html` URL are unaffected: users with a cached `sim.html` stay on the old version (same behaviour as before), and new users loading `sim.html` fresh get the correct updated file. Verified Feb 2026 against TEM_lite and TEM_sim (modes 0–4 unaffected; Mode 5/6 code fully gated by `SIM_MODE` checks).
+**Production risk from adding `?v=N` to Attractors.js: none.** GCS ignores query strings on static file requests — `Attractors.js?v=14` serves identical content to `Attractors.js`. Existing apps without a `?v=N` on their `sim.html` URL are unaffected: users with a cached `sim.html` stay on the old version (same behaviour as before), and new users loading `sim.html` fresh get the correct updated file. Verified Feb 2026 against TEM_lite and TEM_sim (modes 0–4 unaffected; Mode 5/6 code fully gated by `SIM_MODE` checks).
 
 ---
 
@@ -263,6 +263,8 @@ Both must move together and use the same number. Current version: **v=11**.
 | Feb 2026 | `sim/Attractors.js` | Added Mode 5 — Mode 1 without threshold lines, velocity arrow, direction arrows |
 | Feb 2026 | `sim/Attractors.js` | Added Mode 6 — Mode 3 without HillShaper; auto-animation thresholdUnder 200→350 |
 | Feb 2026 | `sim/sim.html` | Added `?v=11` to Attractors.js script tag for cache busting |
+| Feb 2026 | `sim/Attractors.js` | Population label: "Play life's metagame" → "Yield else repeat"; centered with textAlign; bumped to v=13 |
+| Mar 2026 | `sim/Attractors.js` | Population label: "Yield else repeat" → "What shapes you"; bumped to v=14 |
 
 ---
 
@@ -274,6 +276,8 @@ Both must move together and use the same number. Current version: **v=11**.
 - **Feb 2026:** Phase 1 complete — GitHub now holds the canonical GJ version, local and GCS are all in sync
 - **Feb 2026:** Responsive scaling implemented — sim fits iPhone, iPad portrait and landscape correctly via bidirectional postMessage
 - **Feb 2026:** Modes 5 and 6 added; cache-busting `?v=11` added to Attractors.js script tag in sim.html
+- **Feb 2026:** Population label iterations: "Play life's metagame" → "Yield else repeat"; centered with textAlign (v=13)
+- **Mar 2026:** Population label: "Yield else repeat" → "What shapes you" (v=14)
 
 ---
 
