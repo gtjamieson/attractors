@@ -1058,7 +1058,7 @@ var labels = {};
 //"underpopulation", "overpopulation", "population_grows"].forEach(function(label){
 //	labels[label] = window.parent.document.getElementById("label_"+label).innerHTML.trim();
 //});
-labels.population = "Yield else repeat";
+labels.population = "What shapes you";
 labels.catchFish = 'Bad choices';
 labels.releaseFish = 'Good choices';
 labels.underpopulation = 'Mental health';
